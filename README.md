@@ -1,7 +1,9 @@
-# VyasaQuant
+# [VyasaQuant](https://huggingface.co/spaces/garima-mahato/vyasaquant)
 
 ## Overview
 A comprehensive stock analysis system that evaluates Indian stocks through multiple rounds of fundamental analysis to provide buy/sell recommendations based on stability and intrinsic value calculation.
+
+![](https://raw.githubusercontent.com/garima-mahato/VyasaQuant/refs/heads/main/images/web_pg_2.JPG)
 
 ## System Architecture
 
