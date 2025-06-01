@@ -83,7 +83,7 @@ flowchart TD
 
 ## Implementation Plan
 
-## Milestone 1: Data Preparation & Infrastructure (Deadline - 7 June 2025)
+## Milestone 1: Data Preparation & Infrastructure 
 
 ### 1.1 Data Acquisition Agent
 
@@ -181,7 +181,7 @@ CREATE TABLE pe_ratio_intrinsic (
 
 ---
 
-## Milestone 2: Round 1 - Stability Check Implementation (Stability Checker Agent) (Deadline - 22 June 2025)
+## Milestone 2: Round 1 - Stability Check Implementation (Stability Checker Agent) 
 
 ### 2.1 EPS Data Extraction & Processing
 ```
@@ -234,7 +234,7 @@ class NSEDataFetcher:
 
 ---
 
-## Milestone 3: Round 2 - Value Analysis Implementation (Value Analysis Agent) (Deadline - 6 July 2025)
+## Milestone 3: Round 2 - Value Analysis Implementation (Value Analysis Agent) 
 
 ```
 Round-2 (Value Analysis)
@@ -404,7 +404,7 @@ def perform_value_analysis(stock_symbol, stability_results):
 
 ---
 
-## Milestone 4: Recommendation Agent  and API & User Interface (Deadline - 20 July 2025)
+## Milestone 4: Recommendation Agent  and API & User Interface 
 
 ### 4.1 Round 3 - Recommendation Agent 
 
@@ -470,7 +470,7 @@ async def health_check():
 
 ## Implementation Timeline
 
-### Milestone 1 (Weeks 1-2): Infrastructure Setup (7 June 2025)
+### Milestone 1 (Weeks 1-2): Infrastructure Setup (15 June 2025)
 - Set up development environment, chromadb and postgres setup
 - Google Search automation for annual reports
 - NSE website scraping for official reports
@@ -480,19 +480,19 @@ async def health_check():
 - **Embedding Generation**: Use sentence transformers for semantic search
 - **Metadata Indexing**: Store structured data alongside embeddings
 
-### Milestone 2 (Weeks 3-4): Round 1 Implementation (22 June 2025)
+### Milestone 2 (Weeks 3-4): Round 1 Implementation (29 June 2025)
 - Implement EPS extraction and processing
 - Build **fully automated** corporate actions detection and adjustment
 - Create stability check algorithms with earnings fallback
 - Add comprehensive testing and validation
 
-### Milestone 3 (Weeks 5-6): Round 2 Implementation (6 July 2025)
+### Milestone 3 (Weeks 5-6): Round 2 Implementation (13 July 2025)
 - Build market data collection systems
 - Implement P/E calculation engines
 - Create industry benchmarking modules
 - Add valuation analysis logic with pass/fail criteria
 
-### Milestone 4 (Weeks 7-8): Final System & Reporting & UI Integration (20 July 2025)
+### Milestone 4 (Weeks 7-8): Final System & Reporting & UI Integration (27 July 2025)
 - Implement simple pass/fail recommendation engine
 - Build comprehensive detailed report generation
 - Integrate with UI
