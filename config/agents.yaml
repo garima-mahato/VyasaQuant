@@ -1,0 +1,148 @@
+# VyasaQuant - Centralized Agent Configuration
+# This file contains configurations for all agents in the project
+
+# =============================================================================
+# STABILITY CHECKER AGENT CONFIGURATION
+# =============================================================================
+
+stability_checker_agent:
+  agent:
+    name: Stock Stability Checker
+    id: stock_stability_checker_001
+    description: >
+      An AI agent specialized in analyzing stock stability using EPS growth metrics.
+      Follows a 6-step process to evaluate stocks based on earnings consistency and growth rate.
+      Uses existing data_acquisition_server tools for comprehensive financial data analysis.
+
+  strategy:
+    planning_mode: conservative   # [conservative, exploratory]
+    exploration_mode: parallel    # [parallel, sequential] (only relevant if planning_mode = exploratory)
+    memory_fallback_enabled: true # after tool exploration failure
+    max_steps: 4                  # max sequential agent steps for stock analysis
+    max_lifelines_per_step: 3     # retries for each step (after primary failure)
+
+  memory:
+    memory_service: true
+    sessions_dir: memory/sessions/
+    documents_dir: memory/documents/
+    index_dir: memory/faiss_index/
+    max_memory_items: 100
+    similarity_threshold: 0.7
+
+  # MCP server configurations - using existing proven servers
+  servers:
+    data_acquisition_server:
+      id: data_acquisition_server
+      script: server.py
+      cwd: mcp_servers/data_acquisition_server
+      description: "Comprehensive financial data acquisition using yfinance and database operations"
+      capabilities:
+        - stock_analysis
+        - financial_data
+        - eps_analysis
+        - database_operations
+        - web_search
+        - data_extraction
+      tools:
+        # Ticker Resolution Tools
+        - get_ticker_symbol          # Primary: lookup ticker from company name
+        - search_companies           # Fallback: search for similar companies
+        
+        # Financial Data Tools (from utils/financial_data.py)
+        - get_basic_stock_info       # Basic stock information including EPS
+        - get_income_statement       # Income statement data (contains EPS)
+        - get_financial_statements   # Complete financial statements
+        - get_balance_sheet          # Balance sheet data
+        - get_cash_flow_statement    # Cash flow statement data
+        - get_daily_price_history    # Daily price history
+        - get_monthly_price_history  # Monthly price history
+        - get_intrinsic_pe_data      # Intrinsic PE ratio calculations
+        - get_sector_info            # Sector information from MoneyControl
+        
+        # Comprehensive Data Tools
+        - fetch_complete_stock_data  # Full data acquisition workflow
+        - fetch_and_store_stock_data # Fetch and store all financial data
+        - fetch_sector_info          # Sector information acquisition
+        
+        # Database Tools (from utils/database.py)
+        - execute_query              # Execute custom SQL queries
+        - get_stock_list             # List all stocks in database
+        - get_stock_financial_data   # Get comprehensive financial data from DB
+        - get_eps_data               # Get EPS data with growth analysis
+        - upsert_stock_data          # Insert/update stock data
+        - update_stock_field         # Update specific stock fields
+        
+        # Report Download Tools
+        - download_annual_reports    # Download annual reports
+        - check_existing_reports     # Check for existing reports
+
+  # Stock stability analysis workflow
+  stability_analysis:
+    workflow:
+      step_1: "Get ticker symbol from company name"
+      step_2: "Fetch last 4 years of EPS data from database or yfinance"
+      step_3: "Verify EPS is increasing across 4 years"
+      step_4: "Calculate EPS Compound Annual Growth Rate (CAGR)"
+      step_5: "Check if EPS increasing AND CAGR > 10%"
+      step_6: "Pass to Round 2 if criteria met, otherwise reject"
+    
+    criteria:
+      eps_years: 4
+      eps_growth_threshold: 10.0  # 10% compound annual growth rate
+      eps_trend_required: true    # EPS must be increasing
+      
+    data_sources:
+      primary: "Database (vq_tbl_income_statement)"
+      fallback_1: "yfinance API via get_income_statement"
+      fallback_2: "Web search + AI extraction"
+      
+    formulas:
+      eps_cagr: "((Final_EPS / Initial_EPS) ^ (1/(Years-1)) - 1) * 100"
+      
+  # AI model configuration - User configurable
+  ai_model:
+    # Primary provider: "google" or "ollama"
+    provider: "google"
+    
+    # Google GenAI configuration
+    google:
+      model: "gemini-2.0-flash-001"  # Available: gemini-2.0-flash-001, gemini-1.5-pro, gemini-1.5-flash
+      temperature: 0.1
+      max_tokens: 4000
+      api_key_env_var: "GOOGLE_API_KEY"
+      
+    # Ollama configuration (local hosting)
+    ollama:
+      model: "gemma3:1b"  # Available: gemma3:1b, llama3.1:70b, codellama, mistral, etc.
+      base_url: "http://localhost:11434"
+      temperature: 0.1
+      max_tokens: 4000
+      timeout: 30
+      
+    # Fallback configuration
+    fallback:
+      provider: "ollama"  # Fallback to ollama if google fails
+      enable_fallback: true
+
+  # Logging configuration
+  logging:
+    level: INFO
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    file: "logs/stability_checker.log"
+
+# =============================================================================
+# FUTURE AGENT CONFIGURATIONS
+# =============================================================================
+# Add more agent configurations here as needed
+# Examples:
+# value_analysis_agent:
+#   agent:
+#     name: Value Analysis Agent
+#     id: value_analysis_001
+#     # ... configuration
+#
+# portfolio_manager_agent:
+#   agent:
+#     name: Portfolio Manager Agent
+#     id: portfolio_manager_001
+#     # ... configuration 

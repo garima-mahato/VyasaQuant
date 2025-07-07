@@ -1,0 +1,270 @@
+{
+  "summary": {
+    "total_chunks": 28,
+    "chunk_types": {
+      "pre_contents_page": 2,
+      "contents_page": 1,
+      "contents_based_section": 25
+    },
+    "tables_found": 24,
+    "sections_extracted": 27,
+    "contents_page_number": 3,
+    "processing_timestamp": "2025-06-26T03:46:08.456614",
+    "chunking_strategy": "contents_based"
+  },
+  "sections": [
+    "Chairman’s Statement",
+    "Corporate Information",
+    "Board of Directors & Chief Executive Ofﬁcers",
+    "Major Events and Achievements",
+    "Financial Highlights",
+    "Notice of 61ˢᵗ Annual General Meeting",
+    "Independent Auditor’s Report",
+    "Comments of the C & AG",
+    "Balance Sheet",
+    "Statement of Proﬁt and Loss",
+    "Statement of Changes in Equity",
+    "Statement of Cash Flow",
+    "Material Accounting Policies",
+    "Notes to Financial Statements",
+    "Board’s Report",
+    "Annexures to Board’s Report",
+    "Management Discussion & Analysis Report",
+    "Corporate Governance Report",
+    "Business Responsibility & Sustainability Report",
+    "Independent Auditor’s Report",
+    "Comments of the C & AG",
+    "Balance Sheet",
+    "Statement of Proﬁt and Loss",
+    "Statement of Changes in Equity",
+    "Statement of Cash Flow",
+    "Material Accounting Policies",
+    "Notes to Financial Statements"
+  ],
+  "chunk_overview": [
+    {
+      "id": "pre_contents_page_1",
+      "section": "Pre-Contents Page 1",
+      "chunk_type": "text",
+      "token_count": 16,
+      "table_count": 0,
+      "page_number": 1
+    },
+    {
+      "id": "pre_contents_page_2",
+      "section": "Pre-Contents Page 2",
+      "chunk_type": "text",
+      "token_count": 4,
+      "table_count": 0,
+      "page_number": 2
+    },
+    {
+      "id": "contents_page",
+      "section": "Contents",
+      "chunk_type": "text",
+      "token_count": 245,
+      "table_count": 0,
+      "page_number": 3
+    },
+    {
+      "id": "section_chairman’s_statement",
+      "section": "CORPORATE OVERVIEW - Chairman’s Statement",
+      "chunk_type": "text",
+      "token_count": 455,
+      "table_count": 0,
+      "page_number": 5
+    },
+    {
+      "id": "section_corporate_information",
+      "section": "CORPORATE OVERVIEW - Corporate Information",
+      "chunk_type": "mixed",
+      "token_count": 40,
+      "table_count": 1,
+      "page_number": 8
+    },
+    {
+      "id": "section_board_of_directors_and_chief_executive_ofﬁcers",
+      "section": "CORPORATE OVERVIEW - Board of Directors & Chief Executive Ofﬁcers",
+      "chunk_type": "text",
+      "token_count": 733,
+      "table_count": 0,
+      "page_number": 10
+    },
+    {
+      "id": "section_major_events_and_achievements",
+      "section": "CORPORATE OVERVIEW - Major Events and Achievements",
+      "chunk_type": "text",
+      "token_count": 206,
+      "table_count": 0,
+      "page_number": 16
+    },
+    {
+      "id": "section_financial_highlights",
+      "section": "CORPORATE OVERVIEW - Financial Highlights",
+      "chunk_type": "mixed",
+      "token_count": 62,
+      "table_count": 2,
+      "page_number": 20
+    },
+    {
+      "id": "section_notice_of_61ˢᵗ_annual_general_meeting",
+      "section": "CORPORATE OVERVIEW - Notice of 61ˢᵗ Annual General Meeting",
+      "chunk_type": "text",
+      "token_count": 1141,
+      "table_count": 0,
+      "page_number": 24
+    },
+    {
+      "id": "section_independent_auditor’s_report",
+      "section": "FINANCIAL STATEMENTS - Independent Auditor’s Report",
+      "chunk_type": "text",
+      "token_count": 815,
+      "table_count": 0,
+      "page_number": 142
+    },
+    {
+      "id": "section_comments_of_the_c_and_ag",
+      "section": "FINANCIAL STATEMENTS - Comments of the C & AG",
+      "chunk_type": "mixed",
+      "token_count": 114,
+      "table_count": 2,
+      "page_number": 162
+    },
+    {
+      "id": "section_balance_sheet",
+      "section": "FINANCIAL STATEMENTS - Balance Sheet",
+      "chunk_type": "mixed",
+      "token_count": 46,
+      "table_count": 1,
+      "page_number": 164
+    },
+    {
+      "id": "section_statement_of_proﬁt_and_loss",
+      "section": "FINANCIAL STATEMENTS - Statement of Proﬁt and Loss",
+      "chunk_type": "mixed",
+      "token_count": 118,
+      "table_count": 2,
+      "page_number": 166
+    },
+    {
+      "id": "section_statement_of_changes_in_equity",
+      "section": "FINANCIAL STATEMENTS - Statement of Changes in Equity",
+      "chunk_type": "mixed",
+      "token_count": 361,
+      "table_count": 3,
+      "page_number": 168
+    },
+    {
+      "id": "section_statement_of_cash_flow",
+      "section": "FINANCIAL STATEMENTS - Statement of Cash Flow",
+      "chunk_type": "mixed",
+      "token_count": 53,
+      "table_count": 1,
+      "page_number": 170
+    },
+    {
+      "id": "section_material_accounting_policies",
+      "section": "FINANCIAL STATEMENTS - Material Accounting Policies",
+      "chunk_type": "text",
+      "token_count": 702,
+      "table_count": 0,
+      "page_number": 172
+    },
+    {
+      "id": "section_notes_to_financial_statements",
+      "section": "FINANCIAL STATEMENTS - Notes to Financial Statements",
+      "chunk_type": "mixed",
+      "token_count": 110,
+      "table_count": 2,
+      "page_number": 180
+    },
+    {
+      "id": "section_board’s_report",
+      "section": "STATUTORY REPORTS - Board’s Report",
+      "chunk_type": "mixed",
+      "token_count": 774,
+      "table_count": 1,
+      "page_number": 35
+    },
+    {
+      "id": "section_annexures_to_board’s_report",
+      "section": "STATUTORY REPORTS - Annexures to Board’s Report",
+      "chunk_type": "mixed",
+      "token_count": 116,
+      "table_count": 2,
+      "page_number": 48
+    },
+    {
+      "id": "section_management_discussion_and_analysis_report",
+      "section": "STATUTORY REPORTS - Management Discussion & Analysis Report",
+      "chunk_type": "text",
+      "token_count": 685,
+      "table_count": 0,
+      "page_number": 71
+    },
+    {
+      "id": "section_corporate_governance_report",
+      "section": "STATUTORY REPORTS - Corporate Governance Report",
+      "chunk_type": "mixed",
+      "token_count": 214,
+      "table_count": 1,
+      "page_number": 78
+    },
+    {
+      "id": "section_business_responsibility_and_sustainability_report",
+      "section": "STATUTORY REPORTS - Business Responsibility & Sustainability Report",
+      "chunk_type": "mixed",
+      "token_count": 461,
+      "table_count": 1,
+      "page_number": 99
+    },
+    {
+      "id": "section_independent_auditor’s_report",
+      "section": "CONSOLIDATED - Independent Auditor’s Report",
+      "chunk_type": "text",
+      "token_count": 892,
+      "table_count": 0,
+      "page_number": 271
+    },
+    {
+      "id": "section_balance_sheet",
+      "section": "CONSOLIDATED - Balance Sheet",
+      "chunk_type": "mixed",
+      "token_count": 46,
+      "table_count": 1,
+      "page_number": 290
+    },
+    {
+      "id": "section_statement_of_changes_in_equity",
+      "section": "CONSOLIDATED - Statement of Changes in Equity",
+      "chunk_type": "mixed",
+      "token_count": 43,
+      "table_count": 1,
+      "page_number": 294
+    },
+    {
+      "id": "section_statement_of_cash_flow",
+      "section": "CONSOLIDATED - Statement of Cash Flow",
+      "chunk_type": "mixed",
+      "token_count": 47,
+      "table_count": 1,
+      "page_number": 296
+    },
+    {
+      "id": "section_material_accounting_policies",
+      "section": "CONSOLIDATED - Material Accounting Policies",
+      "chunk_type": "text",
+      "token_count": 669,
+      "table_count": 0,
+      "page_number": 298
+    },
+    {
+      "id": "section_notes_to_financial_statements",
+      "section": "CONSOLIDATED - Notes to Financial Statements",
+      "chunk_type": "mixed",
+      "token_count": 242,
+      "table_count": 2,
+      "page_number": 306
+    }
+  ]
+}

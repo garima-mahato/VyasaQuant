@@ -1,0 +1,49 @@
+{
+  "ticker_data": [
+    {
+      "Symbol": "HAL",
+      "Company_Name": "Hindustan Aeronautics Limited",
+      "Series": "EQ",
+      "Listing_Date": "2018-03-28",
+      "ISIN_Number": "INE066F01012",
+      "Face_Value": 5,
+      "Market_Lot": 1
+    },
+    {
+      "Symbol": "TCS",
+      "Company_Name": "Tata Consultancy Services Limited",
+      "Series": "EQ",
+      "Listing_Date": "2004-08-25",
+      "ISIN_Number": "INE467B01029",
+      "Face_Value": 1,
+      "Market_Lot": 1
+    },
+    {
+      "Symbol": "HDFCBANK",
+      "Company_Name": "HDFC Bank Limited",
+      "Series": "EQ",
+      "Listing_Date": "1995-11-08",
+      "ISIN_Number": "INE040A01034",
+      "Face_Value": 1,
+      "Market_Lot": 1
+    },
+    {
+      "Symbol": "INFY",
+      "Company_Name": "Infosys Limited",
+      "Series": "EQ",
+      "Listing_Date": "1993-06-25",
+      "ISIN_Number": "INE009A01021",
+      "Face_Value": 5,
+      "Market_Lot": 1
+    },
+    {
+      "Symbol": "ICICIBANK",
+      "Company_Name": "ICICI Bank Limited",
+      "Series": "EQ",
+      "Listing_Date": "1997-09-17",
+      "ISIN_Number": "INE090A01013",
+      "Face_Value": 2,
+      "Market_Lot": 1
+    }
+  ]
+} 

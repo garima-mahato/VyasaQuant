@@ -1,0 +1,113 @@
+# VyasaQuant - Centralized MCP Server Configuration
+# This file contains configurations for all MCP servers used across the project
+
+# =============================================================================
+# MCP SERVERS CONFIGURATION
+# =============================================================================
+
+mcp_servers:
+  data_acquisition_server:
+    id: data_acquisition_server
+    name: Financial Data Acquisition Server
+    description: "Comprehensive financial data acquisition using yfinance, database operations, and web scraping"
+    command: python
+    args:
+      - server.py
+    cwd: ./mcp_servers/data_acquisition_server
+    working_directory: "D:/Projects/GitHub/StockAgent/VyasaQuant"
+    env:
+      PYTHONPATH: ""
+    version: "2.0.0"
+    
+    # Available tools from this server
+    tools:
+      # Ticker Resolution Tools
+      - get_ticker_symbol          # Primary: lookup ticker from company name
+      - search_companies           # Fallback: search for similar companies
+      
+      # Financial Data Tools (from utils/financial_data.py)
+      - get_basic_stock_info       # Basic stock information including EPS
+      - get_income_statement       # Income statement data (contains EPS)
+      - get_financial_statements   # Complete financial statements
+      - get_balance_sheet          # Balance sheet data
+      - get_cash_flow_statement    # Cash flow statement data
+      - get_daily_price_history    # Daily price history
+      - get_monthly_price_history  # Monthly price history
+      - get_intrinsic_pe_data      # Intrinsic PE ratio calculations
+      - get_sector_info            # Sector information from MoneyControl
+      
+      # Comprehensive Data Tools
+      - fetch_complete_stock_data  # Full data acquisition workflow
+      - fetch_and_store_stock_data # Fetch and store all financial data
+      - fetch_sector_info          # Sector information acquisition
+      
+      # Database Tools (from utils/database.py)
+      - execute_query              # Execute custom SQL queries
+      - get_stock_list             # List all stocks in database
+      - get_stock_financial_data   # Get comprehensive financial data from DB
+      - get_eps_data               # Get EPS data with growth analysis
+      - upsert_stock_data          # Insert/update stock data
+      - update_stock_field         # Update specific stock fields
+      
+      # Report Download Tools
+      - download_annual_reports    # Download annual reports
+      - check_existing_reports     # Check for existing reports
+
+  value_analysis_server:
+    id: value_analysis_server
+    name: Value Analysis Server
+    description: "Stock valuation analysis using various metrics and models"
+    command: python
+    args:
+      - server.py
+    cwd: ./mcp_servers/value_analysis_server
+    working_directory: "D:/Projects/GitHub/StockAgent/VyasaQuant"
+    env:
+      PYTHONPATH: ""
+    version: "1.0.0"
+    
+    # Available tools from this server (when implemented)
+    tools:
+      - calculate_intrinsic_value  # Calculate intrinsic value
+      - dcf_analysis              # Discounted Cash Flow analysis
+      - pe_ratio_analysis         # P/E ratio analysis
+      - book_value_analysis       # Book value analysis
+
+  database_server:
+    id: database_server
+    name: Database Server
+    description: "Database operations and management"
+    command: python
+    args:
+      - server.py
+    cwd: ./mcp_servers/database_server
+    working_directory: "D:/Projects/GitHub/StockAgent/VyasaQuant"
+    env:
+      PYTHONPATH: ""
+    version: "1.0.0"
+    
+    # Available tools from this server (when implemented)
+    tools:
+      - execute_query            # Execute SQL queries
+      - get_table_schema         # Get table schema
+      - backup_database          # Backup database
+      - restore_database         # Restore database
+
+# =============================================================================
+# LEGACY CONFIGURATION (for backward compatibility)
+# =============================================================================
+
+legacy_mcp_config:
+  mcpServers:
+    data_acquisition:
+      command: python
+      args: ["server.py"]
+      cwd: "./mcp_servers/data_acquisition_server"
+    value_analysis:
+      command: python
+      args: ["server.py"]
+      cwd: "./mcp_servers/value_analysis_server"
+    database:
+      command: python
+      args: ["server.py"]
+      cwd: "./mcp_servers/database_server" 

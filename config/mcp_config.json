@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "data_acquisition": {
+      "command": "python",
+      "args": ["server.py"],
+      "cwd": "./mcp_servers/data_acquisition_server"
+    },
+    "value_analysis": {
+      "command": "python",
+      "args": ["server.py"],
+      "cwd": "./mcp_servers/value_analysis_server"
+    },
+    "database": {
+      "command": "python",
+      "args": ["server.py"],
+      "cwd": "./mcp_servers/database_server"
+    }
+  }
+} 
