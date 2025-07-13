@@ -2,13 +2,32 @@ import pandas as pd
 import os
 from typing import Optional
 import logging
+from pathlib import Path
+
+# Configure file logging for ticker_utils
+log_dir = Path(__file__).parent.parent / "logs"
+log_dir.mkdir(exist_ok=True)
 
 logger = logging.getLogger(__name__)
+
+# Add file handler if not already present
+if not any(isinstance(handler, logging.FileHandler) for handler in logger.handlers):
+    file_handler = logging.FileHandler(log_dir / "ticker_utils.log", encoding='utf-8')
+    file_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    logger.setLevel(logging.INFO)
 
 class TickerManager:
     """Manager for ticker symbol operations"""
     
-    def __init__(self, csv_path: str = "data/indian_equities_ticker_database.csv"):
+    def __init__(self, csv_path: str = None):
+        if csv_path is None:
+            # Use absolute path relative to project root
+            project_root = Path(__file__).parent.parent  # Go up from utils/ to project root
+            csv_path = str(project_root / "data" / "indian_equities_ticker_database.csv")
+        
         self.csv_path = csv_path
         self._ticker_df = None
     
@@ -20,7 +39,7 @@ class TickerManager:
                     raise FileNotFoundError(f"Ticker database file not found: {self.csv_path}")
                 
                 self._ticker_df = pd.read_csv(self.csv_path)
-                logger.info(f"Loaded {len(self._ticker_df)} ticker records")
+                logger.info(f"Loaded {len(self._ticker_df)} ticker records from {self.csv_path}")
             except Exception as e:
                 logger.error(f"Error loading ticker data: {str(e)}")
                 raise
@@ -29,7 +48,7 @@ class TickerManager:
     
     def get_symbol_by_name(self, company_name: str) -> Optional[str]:
         """
-        Get ticker symbol by company name
+        Get ticker symbol by company name.
         
         Args:
             company_name: Name of the company to search for
@@ -38,35 +57,49 @@ class TickerManager:
             Ticker symbol if found, None otherwise
         """
         try:
-            df = self._load_ticker_data()
+            logger.info(f"TickerManager: Looking up symbol for '{company_name}'")
             
-            # First try exact match (case insensitive)
+            df = self._load_ticker_data()
+            if df is None:
+                logger.error("TickerManager: Ticker data not loaded")
+                return None
+            
+            logger.info(f"TickerManager: Loaded {len(df)} ticker records")
+            
+            # Clean the input
+            company_name = company_name.strip()
+            logger.info(f"TickerManager: Cleaned company name: '{company_name}'")
+            
+            # Try exact match first (case-insensitive)
+            logger.info("TickerManager: Trying exact match...")
             exact_match = df[df['name'].str.lower() == company_name.lower()]
+            
             if not exact_match.empty:
                 symbol = exact_match.iloc[0]['symbol']
-                logger.info(f"Found exact match for '{company_name}': {symbol}")
+                logger.info(f"TickerManager: Found exact match - Symbol: {symbol}")
                 return symbol
             
+            logger.info("TickerManager: No exact match found, trying partial match...")
             # Try partial match
-            partial_match = df[df['name'].str.contains(company_name.strip(), case=False, na=False)]
+            partial_match = df[df['name'].str.contains(company_name, case=False, na=False)]
+            
             if not partial_match.empty:
                 symbol = partial_match.iloc[0]['symbol']
-                matched_name = partial_match.iloc[0]['name']
-                logger.info(f"Found partial match for '{company_name}': {symbol} ({matched_name})")
+                logger.info(f"TickerManager: Found partial match - Symbol: {symbol}")
                 return symbol
             
-            # Try reverse partial match (search company name in each record)
-            for _, row in df.iterrows():
-                if company_name.lower().strip() in row['name'].lower():
-                    symbol = row['symbol']
-                    logger.info(f"Found reverse match for '{company_name}': {symbol} ({row['name']})")
-                    return symbol
+            logger.warning(f"TickerManager: No matches found for '{company_name}'")
             
-            logger.warning(f"No ticker symbol found for company: {company_name}")
+            # Debug: Show some sample company names for reference
+            sample_names = df['name'].head(10).tolist()
+            logger.info(f"TickerManager: Sample company names in database: {sample_names}")
+            
             return None
             
         except Exception as e:
-            logger.error(f"Error searching for ticker symbol: {str(e)}")
+            logger.error(f"TickerManager: Error in get_symbol_by_name: {str(e)}")
+            import traceback
+            logger.error(f"TickerManager: Traceback: {traceback.format_exc()}")
             return None
     
     def get_company_info(self, symbol: str) -> Optional[dict]:

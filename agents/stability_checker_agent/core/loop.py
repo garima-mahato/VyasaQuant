@@ -35,7 +35,7 @@ class AgentLoop:
             self.context.step = step
             lifelines_left = self.context.agent_profile.strategy.max_lifelines_per_step
 
-            while lifelines_left >= 0:
+            while lifelines_left > 0:  # Changed from >= 0 to > 0
                 # === Perception ===
                 user_input_override = getattr(self.context, "user_input_override", None)
                 perception = await run_perception(
@@ -67,6 +67,7 @@ class AgentLoop:
                     step_num=step + 1,
                     max_steps=max_steps,
                     context=self.context,
+                    model_manager=self.model  # Pass existing ModelManager instance
                 )
                 print(f"[plan] {plan}")
 
@@ -132,11 +133,25 @@ class AgentLoop:
                     else:
                         lifelines_left -= 1
                         log("loop", f"🛠 Retrying stock analysis... Lifelines left: {lifelines_left}")
+                        if lifelines_left <= 0:
+                            log("loop", "❌ No lifelines remaining - terminating analysis")
+                            self.context.final_answer = "FINAL_ANSWER: [Analysis terminated - max retries exceeded]"
+                            return {"status": "done", "result": self.context.final_answer}
                         continue
                 else:
-                    log("loop", f"⚠️ Invalid plan detected — retrying... Lifelines left: {lifelines_left-1}")
                     lifelines_left -= 1
+                    log("loop", f"⚠️ Invalid plan detected — retrying... Lifelines left: {lifelines_left}")
+                    if lifelines_left <= 0:
+                        log("loop", "❌ No lifelines remaining - terminating analysis")
+                        self.context.final_answer = "FINAL_ANSWER: [Analysis terminated - max retries exceeded]"
+                        return {"status": "done", "result": self.context.final_answer}
                     continue
+            
+            # If we exit the lifelines loop without success, terminate
+            if lifelines_left <= 0:
+                log("loop", "❌ Step failed - no lifelines remaining")
+                self.context.final_answer = "FINAL_ANSWER: [Analysis failed - max retries exceeded in step]"
+                return {"status": "done", "result": self.context.final_answer}
 
         log("loop", "⚠️ Max steps reached without completing stock analysis.")
         self.context.final_answer = "FINAL_ANSWER: [Stock analysis incomplete - max steps reached]"

@@ -114,7 +114,7 @@ def generate_perception_reasoning(user_input: str, analysis_stage: str, selected
     Reasoning:
     - Current analysis stage requires {stage_desc.lower()}
     - Selected servers provide necessary tools for this stage
-    - User input: "{user_input[:100]}{'...' if len(user_input) > 100 else ''}"
+    - User input: "{user_input}"
     """
     
     return reasoning.strip()

@@ -122,7 +122,8 @@ class ModelManager:
                 
                 # Check if configured model is available
                 configured_model = ollama_config.get("model", "gemma3:1b")
-                available_models = [m.get('name', '') for m in models.get('models', []) if m.get('name', '').strip()]
+                available_models = [m.get('model', '') for m in models.get('models', []) if m.get('model', '').strip()]
+                #print(models.get('models', []))
                 
                 if configured_model in available_models:
                     print(f"✅ Configured model '{configured_model}' is available")
