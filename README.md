@@ -360,14 +360,14 @@ Round-1 (Stability Check):
 A) Prompt
 1) Fetch the last 4 years of the basic Earnings per share (EPS) of consolidated report. This will be the EPS.
 2) Adjust EPS of an year if any stock split or issuance of bonus shares happened that year. Read the instruction section to plan out how to adjust.
-3) The EPS across the 10 years must be increasing to consider it as stable.
-4) Calculate EPS Growth Rate or EPS-GR = compound growth rate across the 10 year period = (power((EPS of current financial year/EPS of the previous 10th financial year),(1/10))-1)*100
+3) The EPS across the 4 years must be increasing to consider it as stable.
+4) Calculate EPS Growth Rate or EPS-GR = compound growth rate across the 4 year period = (power((EPS of current financial year/EPS of the previous 10th financial year),(1/4))-1)*100
 If the current date is in between the current financial year, consider trailing twelve months EPS(EPS-TTM) as the current financial year's EPS
-5) If the EPS across the 10 years is increasing and EPS-GR > 10%, then the stock passes the first round of stability check and goes to round 2 for value analysis
+5) If the EPS across the 4 years is increasing and EPS-GR > 10%, then the stock passes the first round of stability check and goes to round 2 for value analysis
 6) Otherwise, the stock is rejected.
 
 B) Instructions	for Round 1	
-1. EPS Stability Check should ideally be done over atleast a 10 year period.					
+1. EPS Stability Check should ideally be done over atleast a 10 year period but we have considered over here 4 years for POC.					
 2. EPS is heavily impacted by number of outstanding shares of a company. e.g. a 1:5 Stock Split can drastically bring down the EPS in a particular year with no change in company fundamentals.					
 3. EPS, therefore, needs to be historically adjusted (manually) for events like Stock Splits, Issue of Bonus Shares etc. 					
 4. In such cases, we also need to be careful about Intrinsic P/E calcualtion, since the historic Price as well as EPS needs adjustment.					
