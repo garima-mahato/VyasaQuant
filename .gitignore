@@ -24,6 +24,7 @@ wheels/
 vyasaquant_env/
 venv/
 ENV/
+env/
 
 # IDE
 .idea/
@@ -31,42 +32,67 @@ ENV/
 *.swp
 *.swo
 
-# Project specific
-downloads/
-chroma_db/
-.env
-data/
+# Backend-specific files
+backend/vyasaquant_env/
+backend/venv/
+backend/downloads/
+backend/chroma_db/
+backend/data/
+backend/logs/
+backend/outputs/
+backend/file_cache/
+backend/.env
+backend/.pytest_cache/
+backend/__pycache__/
 
+# Database files
+*.sqlite3
+*.db
+
+# ChromaDB and Vector stores
+*/chroma_db/
+*/faiss_index/
+
+# Memory and session files
+*/memory/
+*/sessions/
+*/documents/
+
+# MCP server files
+backend/mcp_servers/**/__pycache__/
+backend/mcp_servers/**/logs/
+backend/mcp_servers/**/.env
+
+# Agent-specific files
+backend/agents/**/__pycache__/
+backend/agents/**/memory/
+backend/agents/**/logs/
+backend/agents/**/outputs/
+backend/agents/**/faiss_index/
+backend/agents/**/documents/
+
+# Frontend (Node.js/React)
+node_modules/
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
 
 # Logs
 *.log
 logs/
-
-# Database
-*.sqlite3
-*.db
+*/logs/
 
 # Jupyter Notebook
 .ipynb_checkpoints
-
-# Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+*/.ipynb_checkpoints/
 
 # Unit test / coverage reports
 htmlcov/
@@ -83,4 +109,49 @@ coverage.xml
 # mypy
 .mypy_cache/
 .dmypy.json
-dmypy.json 
+dmypy.json
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Debug and test files
+debug_*.py
+test_*.log
+*.debug
+
+# API keys and secrets (additional safety)
+**/api_keys.json
+**/secrets.json
+**/*.key
+**/*.pem
+
+# Large data files
+*.csv
+*.xlsx
+*.json.gz
+*.pickle
+*.pkl
+
+# Docker (if added later)
+Dockerfile*
+docker-compose*.yml
+.dockerignore 

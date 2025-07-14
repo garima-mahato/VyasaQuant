@@ -1,7 +1,7 @@
 # modules/decision.py - Decision Making for Stock Stability Analysis
 
 from typing import List, Dict, Any, Optional
-from modules.memory import MemoryItem
+from .memory import MemoryItem
 
 async def generate_plan(
     user_input: str,

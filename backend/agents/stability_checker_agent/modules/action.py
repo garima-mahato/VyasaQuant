@@ -4,7 +4,7 @@ import asyncio
 import sys
 from io import StringIO
 from typing import Any, Dict
-from core.session import MultiMCP
+from ..core.session import MultiMCP
 import re
 
 async def run_python_sandbox(plan: str, dispatcher: MultiMCP) -> str:

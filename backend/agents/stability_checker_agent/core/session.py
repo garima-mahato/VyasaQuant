@@ -9,6 +9,14 @@ from pathlib import Path
 import sys
 import os
 
+# CRITICAL: Set Windows event loop policy for subprocess support
+if sys.platform == "win32":
+    try:
+        asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+        print("🖥️  Applied Windows Proactor event loop policy for MCP servers")
+    except Exception as e:
+        print(f"⚠️  Failed to set Windows event loop policy: {e}")
+
 class MCPServerProcess:
     """Manages individual MCP server processes"""
     
@@ -44,13 +52,22 @@ class MCPServerProcess:
                 print(f"❌ Working directory does not exist: {cwd_path}")
                 return False
             
-            self.process = await asyncio.create_subprocess_exec(
-                sys.executable, str(script_path),
-                cwd=str(cwd_path),
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-                stdin=asyncio.subprocess.PIPE
-            )
+            # Try subprocess creation with Windows compatibility
+            try:
+                self.process = await asyncio.create_subprocess_exec(
+                    sys.executable, self.script,
+                    cwd=str(cwd_path),
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                    stdin=asyncio.subprocess.PIPE
+                )
+                print(f"✅ Subprocess created successfully for {self.id}")
+                
+            except NotImplementedError as e:
+                print(f"❌ asyncio subprocess not supported - {e}")
+                print(f"💡 This is a Windows/asyncio event loop policy issue")
+                print(f"💡 Try restarting the server - the event loop policy should now be correctly set")
+                return False
             
             # Start log forwarding task
             self.log_forwarding_task = asyncio.create_task(self._forward_logs())

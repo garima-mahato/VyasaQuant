@@ -3,7 +3,7 @@
 import re
 from typing import List, Dict, Any, Optional
 from pydantic import BaseModel
-from core.context import AgentContext
+from ..core.context import AgentContext
 
 class Perception(BaseModel):
     """Perception result for stock analysis"""

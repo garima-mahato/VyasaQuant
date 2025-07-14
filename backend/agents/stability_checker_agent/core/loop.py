@@ -1,18 +1,18 @@
 # core/loop.py - Stock Stability Checker Agent Loop
 
 import asyncio
-from modules.perception import run_perception
-from modules.decision import generate_plan
-from modules.action import run_python_sandbox
-from modules.model_manager import ModelManager
-from core.session import MultiMCP
-from core.strategy import select_decision_prompt_path
-from core.context import AgentContext
-from modules.tools import summarize_tools
+from ..modules.perception import run_perception
+from ..modules.decision import generate_plan
+from ..modules.action import run_python_sandbox
+from ..modules.model_manager import ModelManager
+from .session import MultiMCP
+from .strategy import select_decision_prompt_path
+from .context import AgentContext
+from ..modules.tools import summarize_tools
 import re
 
 try:
-    from agent import log
+    from ..agent import log
 except ImportError:
     import datetime
     def log(stage: str, msg: str):

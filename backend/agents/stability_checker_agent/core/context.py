@@ -1,8 +1,8 @@
 # core/context.py - Stock Stability Checker Agent Context
 
 from typing import List, Optional, Dict, Any
-from modules.memory import MemoryManager, MemoryItem
-from core.session import MultiMCP  # For dispatcher typing
+from ..modules.memory import MemoryManager, MemoryItem
+from .session import MultiMCP  # For dispatcher typing
 from pathlib import Path
 import yaml
 import time

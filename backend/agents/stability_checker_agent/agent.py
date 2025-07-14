@@ -2,9 +2,9 @@
 
 import asyncio
 import yaml
-from core.loop import AgentLoop
-from core.session import MultiMCP
-from core.context import MemoryItem, AgentContext
+from .core.loop import AgentLoop
+from .core.session import MultiMCP
+from .core.context import MemoryItem, AgentContext
 import datetime
 from pathlib import Path
 import json

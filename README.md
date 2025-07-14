@@ -5,6 +5,30 @@ A comprehensive stock analysis system that evaluates Indian stocks through multi
 
 ![](https://raw.githubusercontent.com/garima-mahato/VyasaQuant/refs/heads/main/images/web_pg_2.JPG)
 
+## 🏗️ Project Structure
+
+```
+VyasaQuant/
+├── backend/                 # Python backend with agents and data processing
+│   ├── agents/             # Stock analysis agents
+│   ├── api/                # FastAPI REST API server
+│   ├── config/             # Configuration files
+│   ├── data_processing/    # Data processing pipeline
+│   ├── mcp_servers/        # MCP server implementations
+│   ├── utils/              # Utility functions
+│   ├── tests/              # Backend tests
+│   ├── start_server.py     # API server startup script
+│   └── README.md           # Backend-specific documentation
+├── frontend/               # React frontend application
+│   ├── src/                # Frontend source code
+│   ├── public/             # Static assets
+│   └── README.md           # Frontend-specific documentation
+├── images/                 # Project images and screenshots
+├── README.md               # Main project documentation
+├── .gitignore              # Git ignore rules
+└── LICENSE                 # Project license
+```
+
 ## System Architecture
 
 ### Core Components
@@ -78,6 +102,152 @@ flowchart TD
 - **Web Scraping**: BeautifulSoup, Selenium, requests
 - **Data Processing**: Pandas, NumPy
 - **APIs**: Yahoo Finance, NSE APIs (where available)
+
+
+## 🚀 Quick Start
+
+### Prerequisites
+- **Backend**: Python 3.8+, PostgreSQL
+- **Frontend**: Node.js 16+, npm/yarn
+
+### Backend Setup
+```bash
+cd backend
+python -m venv vyasaquant_env
+source vyasaquant_env/bin/activate  # Windows: vyasaquant_env\Scripts\activate
+pip install -r requirements.txt
+
+# Start the API server
+python start_server.py
+```
+
+### Frontend Setup
+```bash
+cd frontend
+npm install
+npm start
+```
+
+## 🎯 Features
+
+### Core Analysis Components
+1. **Data Acquisition Agent** - Fetches stock data from multiple sources
+2. **Data Processing & Storage** - Cleans and stores data in PostgreSQL/ChromaDB
+3. **Stability Checker Agent** - Evaluates stock stability metrics
+4. **Value Analysis Agent** - Performs intrinsic value calculations
+5. **Recommendation Agent** - Generates buy/sell recommendations
+6. **REST API Server** - FastAPI server with automatic documentation
+7. **Web Interface** - Modern React-based frontend
+
+### Data Sources
+- **NSE** (National Stock Exchange)
+- **Yahoo Finance**
+- **Moneycontrol**
+- **Google Finance**
+
+
+## 🔧 Development
+
+### Backend Development
+```bash
+cd backend
+# Activate virtual environment
+source vyasaquant_env/bin/activate  # Windows: vyasaquant_env\Scripts\activate
+
+# Run API server
+python start_server.py
+
+# Or run with uvicorn directly
+uvicorn api.server:app --host 0.0.0.0 --port 8000 --reload
+
+# Run tests
+pytest
+
+# Generate test coverage
+pytest --cov=.
+```
+
+### Frontend Development
+```bash
+cd frontend
+# Start development server
+npm start
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
+```
+
+## 📈 Usage
+
+1. **Start the backend API server** - Handles data processing and analysis
+2. **Launch the frontend** - Provides web interface for stock analysis
+3. **Enter stock symbol** - Get comprehensive analysis and recommendations
+4. **View results** - Detailed stability and value analysis with buy/sell recommendations
+
+### API Endpoints
+
+The backend provides REST endpoints:
+- **POST /api/analyze** - Comprehensive stock analysis
+- **GET /health** - API health check
+- **GET /** - API information
+- **GET /docs** - Interactive API documentation
+
+### Example API Usage
+
+```bash
+# Analyze a stock
+curl -X POST "http://localhost:8000/api/analyze" \
+     -H "Content-Type: application/json" \
+     -d '{"symbol": "RELIANCE"}'
+
+# Check API health
+curl "http://localhost:8000/health"
+```
+
+## 🛠️ Configuration
+
+### Backend Configuration
+- `backend/config/agents.yaml` - Agent configurations
+- `backend/config/servers.yaml` - Server settings
+- `backend/config/mcp_config.json` - MCP server config
+
+### Environment Variables
+```env
+# Backend (.env in backend/)
+DATABASE_URL=postgresql://user:password@localhost/vyasaquant
+GOOGLE_API_KEY=your_google_api_key
+LLAMA_CLOUD_API_KEY=your_llama_api_key
+
+# Frontend (.env in frontend/)
+REACT_APP_API_URL=http://localhost:8000
+```
+
+## 🧪 Testing
+
+### Backend Tests
+```bash
+cd backend
+pytest tests/
+```
+
+### Frontend Tests
+```bash
+cd frontend
+npm test
+```
+
+<!-- ## 📝 API Documentation
+
+The backend provides REST endpoints for:
+- Stock data retrieval
+- Stability analysis
+- Value analysis  
+- Recommendation generation
+
+**Interactive Documentation**: http://localhost:8000/docs -->
 
 ---
 
@@ -188,7 +358,7 @@ CREATE TABLE pe_ratio_intrinsic (
 Round-1 (Stability Check):
 
 A) Prompt
-1) Fetch the last 10 years of official annual reports of the given stock and get the basic Earnings per share (EPS) of consolidated report from the annual report. This will be the EPS.
+1) Fetch the last 4 years of the basic Earnings per share (EPS) of consolidated report. This will be the EPS.
 2) Adjust EPS of an year if any stock split or issuance of bonus shares happened that year. Read the instruction section to plan out how to adjust.
 3) The EPS across the 10 years must be increasing to consider it as stable.
 4) Calculate EPS Growth Rate or EPS-GR = compound growth rate across the 10 year period = (power((EPS of current financial year/EPS of the previous 10th financial year),(1/10))-1)*100
@@ -546,4 +716,31 @@ erDiagram
 ```
 
 ---
+
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new features
+5. Ensure all tests pass
+6. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Links
+
+- **Live Demo**: [VyasaQuant on Hugging Face](https://huggingface.co/spaces/garima-mahato/vyasaquant)
+- **API Documentation**: http://localhost:8000/docs (when running locally)
+- **Documentation**: See individual README files in `backend/` and `frontend/` directories
+- **Issues**: Report bugs and request features via GitHub Issues
+
+## 🙏 Acknowledgments
+
+- Thanks to all data providers (NSE, Yahoo Finance, Moneycontrol)
+- Open source community for various libraries and tools used
+- Contributors and testers of the system
 
