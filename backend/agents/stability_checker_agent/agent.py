@@ -3,6 +3,7 @@
 import asyncio
 import yaml
 from .core.loop import AgentLoop
+# Use original session manager that actually works with real MCP servers
 from .core.session import MultiMCP
 from .core.context import MemoryItem, AgentContext
 import datetime
@@ -32,6 +33,7 @@ def log(stage: str, msg: str):
 
 async def main():
     print("📈 Stock Stability Checker Agent Ready")
+    print("💡 This agent connects to externally running MCP servers")
     current_session = None
 
     try:
@@ -55,8 +57,14 @@ async def main():
         print(f"📋 Analysis workflow: {profile['stability_analysis']['criteria']['eps_years']} years EPS analysis")
         print(f"📈 Growth threshold: {profile['stability_analysis']['criteria']['eps_growth_threshold']}%")
 
+        # Initialize MCP servers
         multi_mcp = MultiMCP(server_configs=mcp_servers_list)
         await multi_mcp.initialize()
+
+        if not multi_mcp.servers:
+            print("❌ No MCP servers connected")
+            print("💡 Please start MCP servers first: python mcp_server_manager.py")
+            return
 
         while True:
             user_input = input("\n📊 Enter company name or ticker to check stock stability → ")
@@ -121,17 +129,15 @@ async def main():
         print(f"❌ Error: {e}")
         print("💡 Make sure you're running from the project root directory")
         print("💡 Ensure config/agents.yaml exists with stability_checker_agent configuration")
+        print("💡 Start MCP servers first: python mcp_server_manager.py")
         
     except KeyboardInterrupt:
         print("\n👋 Received exit signal. Shutting down...")
+    
+    finally:
+        # Clean up connections
+        if 'multi_mcp' in locals():
+            await multi_mcp.cleanup()
 
 if __name__ == "__main__":
     asyncio.run(main())
-
-
-# Example queries:
-# Reliance Industries
-# RELIANCE
-# TCS
-# What is the EPS growth rate for Infosys over the last 4 years?
-# Check if Wipro passes the stability criteria 

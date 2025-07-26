@@ -45,7 +45,7 @@ def main():
             "app": "api.server:app",
             "host": "0.0.0.0",
             "port": 8000,
-            "reload": True,
+            # "reload": True, # the reload=True options causes the default ProactorEventLoop to be changed to SelectorEventLoop on windows. Refer: https://stackoverflow.com/questions/70568070/running-an-asyncio-subprocess-in-fastapi-results-in-notimplementederror
             "log_level": "info",
             "access_log": True
         }

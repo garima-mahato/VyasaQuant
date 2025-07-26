@@ -13,8 +13,15 @@ import {
   Alert,
   ThemeProvider,
   createTheme,
+  Chip,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@mui/material';
-import { Search, TrendingUp, Assessment, Recommend } from '@mui/icons-material';
+import { Search, TrendingUp, Assessment, Recommend, ShowChart } from '@mui/icons-material';
 import axios from 'axios';
 
 const theme = createTheme({
@@ -28,21 +35,27 @@ const theme = createTheme({
   },
 });
 
+interface EPSData {
+  data: Record<string, number>;
+  years_available: string[];
+  total_years: number;
+}
+
+interface StabilityAnalysis {
+  eps_data: EPSData;
+  eps_growth_rate: number;
+  is_eps_increasing: boolean;
+  passes_stability_criteria: boolean;
+  recommendation: string;
+  reasoning: string;
+}
+
 interface StockAnalysis {
   symbol: string;
   company_name: string;
-  stability_score: number;
-  value_analysis: {
-    intrinsic_value: number;
-    current_price: number;
-    recommendation: string;
-  };
-  key_metrics: {
-    pe_ratio: number;
-    pb_ratio: number;
-    debt_equity: number;
-    roe: number;
-  };
+  analysis_date: string;
+  stability_analysis: StabilityAnalysis;
+  raw_agent_response?: string;
 }
 
 function App() {
@@ -80,9 +93,15 @@ function App() {
         return 'success';
       case 'sell':
         return 'error';
+      case 'further_analysis':
+        return 'info';
       default:
         return 'warning';
     }
+  };
+
+  const formatRecommendation = (recommendation: string) => {
+    return recommendation.replace('_', ' ').toUpperCase();
   };
 
   return (
@@ -93,7 +112,7 @@ function App() {
             VyasaQuant
           </Typography>
           <Typography variant="h6" color="text.secondary">
-            Comprehensive Stock Analysis System
+            Stock Stability Analysis System
           </Typography>
         </Box>
 
@@ -101,7 +120,7 @@ function App() {
           <Box display="flex" gap={2} alignItems="center">
             <TextField
               fullWidth
-              label="Stock Symbol (e.g., RELIANCE, TCS)"
+              label="Stock Symbol or Company Name (e.g., RELIANCE, TCS, HINDUSTAN AERONAUTICS LIMITED)"
               variant="outlined"
               value={symbol}
               onChange={(e) => setSymbol(e.target.value)}
@@ -127,51 +146,83 @@ function App() {
 
         {analysis && (
           <Grid container spacing={3}>
+            {/* Company Header */}
             <Grid item xs={12}>
               <Card>
                 <CardContent>
-                  <Box display="flex" alignItems="center" mb={2}>
-                    <TrendingUp sx={{ mr: 1 }} />
-                    <Typography variant="h5">
-                      {analysis.company_name} ({analysis.symbol})
+                  <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+                    <Box display="flex" alignItems="center">
+                      <TrendingUp sx={{ mr: 1 }} />
+                      <Typography variant="h5">
+                        {analysis.company_name} ({analysis.symbol})
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Analysis Date: {analysis.analysis_date}
                     </Typography>
                   </Box>
-                  <Typography variant="h6" color="text.secondary">
-                    Overall Stability Score: {analysis.stability_score}/100
-                  </Typography>
+                  
+                  <Box display="flex" gap={2} flexWrap="wrap">
+                    <Chip
+                      label={analysis.stability_analysis.is_eps_increasing ? "EPS Increasing" : "EPS Not Increasing"}
+                      color={analysis.stability_analysis.is_eps_increasing ? "success" : "error"}
+                      variant="outlined"
+                    />
+                    <Chip
+                      label={analysis.stability_analysis.passes_stability_criteria ? "Passes Criteria" : "Fails Criteria"}
+                      color={analysis.stability_analysis.passes_stability_criteria ? "success" : "error"}
+                      variant="outlined"
+                    />
+                    <Chip
+                      label={`Growth Rate: ${analysis.stability_analysis.eps_growth_rate.toFixed(2)}%`}
+                      color="info"
+                      variant="outlined"
+                    />
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>
 
+            {/* EPS Data Table */}
             <Grid item xs={12} md={6}>
               <Card>
                 <CardContent>
                   <Box display="flex" alignItems="center" mb={2}>
-                    <Assessment sx={{ mr: 1 }} />
-                    <Typography variant="h6">Value Analysis</Typography>
+                    <ShowChart sx={{ mr: 1 }} />
+                    <Typography variant="h6">EPS Data ({analysis.stability_analysis.eps_data.total_years} Years)</Typography>
                   </Box>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <Typography variant="body2" color="text.secondary">
-                        Current Price
-                      </Typography>
-                      <Typography variant="h6">
-                        ₹{analysis.value_analysis.current_price.toFixed(2)}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body2" color="text.secondary">
-                        Intrinsic Value
-                      </Typography>
-                      <Typography variant="h6">
-                        ₹{analysis.value_analysis.intrinsic_value.toFixed(2)}
-                      </Typography>
-                    </Grid>
-                  </Grid>
+                  
+                  {analysis.stability_analysis.eps_data.total_years > 0 ? (
+                    <TableContainer>
+                      <Table size="small">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell><strong>Year</strong></TableCell>
+                            <TableCell align="right"><strong>EPS (₹)</strong></TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {analysis.stability_analysis.eps_data.years_available.map((year) => (
+                            <TableRow key={year}>
+                              <TableCell>{year}</TableCell>
+                              <TableCell align="right">
+                                {analysis.stability_analysis.eps_data.data[year].toFixed(2)}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  ) : (
+                    <Alert severity="warning">
+                      No EPS data available
+                    </Alert>
+                  )}
                 </CardContent>
               </Card>
             </Grid>
 
+            {/* Recommendation */}
             <Grid item xs={12} md={6}>
               <Card>
                 <CardContent>
@@ -180,55 +231,49 @@ function App() {
                     <Typography variant="h6">Recommendation</Typography>
                   </Box>
                   <Alert
-                    severity={getRecommendationColor(analysis.value_analysis.recommendation)}
-                    sx={{ fontSize: '1.1rem' }}
+                    severity={getRecommendationColor(analysis.stability_analysis.recommendation)}
+                    sx={{ fontSize: '1.1rem', mb: 2 }}
                   >
-                    {analysis.value_analysis.recommendation.toUpperCase()}
+                    {formatRecommendation(analysis.stability_analysis.recommendation)}
                   </Alert>
+                  
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    Growth Rate Analysis:
+                  </Typography>
+                  <Typography variant="h6" color={analysis.stability_analysis.eps_growth_rate > 10 ? "success.main" : "warning.main"}>
+                    {analysis.stability_analysis.eps_growth_rate.toFixed(2)}% CAGR
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
 
+            {/* Detailed Analysis */}
             <Grid item xs={12}>
               <Card>
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    Key Metrics
-                  </Typography>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6} md={3}>
-                      <Typography variant="body2" color="text.secondary">
-                        P/E Ratio
+                  <Box display="flex" alignItems="center" mb={2}>
+                    <Assessment sx={{ mr: 1 }} />
+                    <Typography variant="h6">Detailed Analysis</Typography>
+                  </Box>
+                  
+                  <Paper variant="outlined" sx={{ p: 2, backgroundColor: 'grey.50' }}>
+                    <Typography variant="body1" style={{ whiteSpace: 'pre-line' }}>
+                      {analysis.stability_analysis.reasoning}
+                    </Typography>
+                  </Paper>
+
+                  {analysis.raw_agent_response && (
+                    <Box mt={2}>
+                      <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                        Raw Agent Response (Debug):
                       </Typography>
-                      <Typography variant="h6">
-                        {analysis.key_metrics.pe_ratio.toFixed(2)}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                      <Typography variant="body2" color="text.secondary">
-                        P/B Ratio
-                      </Typography>
-                      <Typography variant="h6">
-                        {analysis.key_metrics.pb_ratio.toFixed(2)}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                      <Typography variant="body2" color="text.secondary">
-                        Debt/Equity
-                      </Typography>
-                      <Typography variant="h6">
-                        {analysis.key_metrics.debt_equity.toFixed(2)}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                      <Typography variant="body2" color="text.secondary">
-                        ROE (%)
-                      </Typography>
-                      <Typography variant="h6">
-                        {analysis.key_metrics.roe.toFixed(2)}%
-                      </Typography>
-                    </Grid>
-                  </Grid>
+                      <Paper variant="outlined" sx={{ p: 1, backgroundColor: 'grey.100' }}>
+                        <Typography variant="caption" style={{ whiteSpace: 'pre-line', fontFamily: 'monospace' }}>
+                          {analysis.raw_agent_response}
+                        </Typography>
+                      </Paper>
+                    </Box>
+                  )}
                 </CardContent>
               </Card>
             </Grid>
@@ -237,8 +282,11 @@ function App() {
 
         {!analysis && !loading && (
           <Paper elevation={1} sx={{ p: 4, textAlign: 'center' }}>
-            <Typography variant="h6" color="text.secondary">
-              Enter a stock symbol to get started with comprehensive analysis
+            <Typography variant="h6" color="text.secondary" gutterBottom>
+              Enter a stock symbol or company name to get started
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Our system analyzes EPS growth trends and provides stability recommendations
             </Typography>
           </Paper>
         )}
