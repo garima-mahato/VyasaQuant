@@ -30,7 +30,7 @@ class FinancialDataManager:
             return None
     
     def get_basic_stock_info(self, ticker: str) -> Optional[Dict[str, Any]]:
-        """Get basic stock information including company name and TTM EPS"""
+        """Get basic stock information including company name, EPS-TTM, and industry"""
         try:
             dat = self.get_ticker_data(ticker)
             if dat is None:
@@ -45,7 +45,8 @@ class FinancialDataManager:
                 'Ticker': ticker,
                 'Stock_Name': info.get('longName', info.get('shortName', '')),
                 'Current_Financial_Year': str(self.get_current_financial_year()),
-                'eps_ttm': info.get('epsTrailingTwelveMonths')
+                'eps_ttm': info.get('epsTrailingTwelveMonths'),
+                'industry': info.get('industryDisp')
             }
             
             logger.info(f"Retrieved basic info for {ticker}: {stock_info['Stock_Name']}")
@@ -238,15 +239,15 @@ class FinancialDataManager:
     def get_sector_info_from_moneycontrol(self, stock_symbol: str) -> Optional[Dict[str, Any]]:
         """Get sector and sector PE from MoneyControl API"""
         try:
-            url = f"https://priceapi.moneycontrol.com/pricefeed/bse/equitycash/{stock_symbol}"
+            url = f"https://priceapi.moneycontrol.com/pricefeed/nse/equitycash/{stock_symbol}"
             response = requests.get(url, timeout=10)
             response.raise_for_status()
             
-            data = response.json()
+            data = response.json()['data']
             
             sector_info = {
-                'Sector': data.get('sector', ''),
-                'Sector_PE': data.get('sectorPE', None)
+                'Sector': data.get('newSubsector', ''),
+                'Sector_PE': data.get('IND_PE', None)
             }
             
             logger.info(f"Retrieved sector info for {stock_symbol}: {sector_info}")

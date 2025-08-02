@@ -54,8 +54,8 @@ def get_basic_stock_info(ticker: str) -> Dict[str, Any]:
             "stock_info": {
                 "stock_symbol": ticker.replace('.NS', ''),
                 "company_name": f"{ticker} Company Ltd.",
-                "current_eps": 0,
-                "sector": "",
+                "eps_ttm": 0,
+                "industry": "",
                 "market_cap": ""
             },
             "message": f"No details found for {ticker}"
